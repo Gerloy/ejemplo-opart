@@ -1,24 +1,52 @@
 final int CANT_CUADRADOS = 26;
 final int ANCHO = 400;
 final int ALTO = 400;
+final float OFFSET = 500;
 
 PImage obra;
 color col1,col2,col_actual;
+
+//Cosas para probar interacciones y cambios
+float delta = 0;
+float time;
+float t_offset = 0;
 void setup() {
   size(800, 400);
   obra = loadImage("data/Obra.png");
-  col1 = color(52,0,52);
-  col2 = color(0,52,52);
+  col1 = color(127,0,127);
+  col2 = color(0,127,127);
   col_actual = col1;
   rectMode(CENTER);
   noFill();
   strokeWeight(5);
   stroke(col_actual);
+  time = millis();
 }
 void draw() {
   background(200);
-  dibujarObra();
-  image(obra,0,0,400,400);
+  checkearTime();
+  dibujarObra(); //<>//
+  image(obra,0,0,400,400); //<>//
+  updateDelta();
+}
+
+void checkearTime(){
+  t_offset += delta;
+  if(t_offset >= OFFSET){
+    cambiarColores();
+    t_offset = 0;
+  }
+}
+
+void cambiarColores(){
+  color pivot = col1;
+  col1 = col2;
+  col2 = pivot;
+}
+
+void updateDelta(){
+  delta = millis() - time;
+  time = millis();
 }
 
 void dibujarObra(){
